@@ -105,6 +105,8 @@ def changecolor(box):
     global charmap
     global boxes
     global tutorialsteps
+
+    # Since this is part of the tutorial, I need to update the tutorial steps completed variable
     tutorialsteps = tutorialsteps[0] + "g" + tutorialsteps[2]
 
     if charmap[box] == "0":
@@ -136,6 +138,7 @@ def newwordani(prev, char):
     global boxes
     global clonehandlerlist
 
+    # Handle animations for creating box clones
     tempxconfig = []
     for f in range(0, 5):
         tempxconfig.append(clone(boxes[f]))
@@ -151,6 +154,7 @@ def newwordani(prev, char):
         elif char[u] == "2":
             tempxconfig[u].config(bg="#538d4e", activebackground="#538d4e")
 
+    # New boxes animation
     for k in range(0, 75):
         for h in range(0, 5):
             boxes[h].place(y=((100 + ((entry - 1) * 75)) + k))
@@ -163,6 +167,7 @@ def newwordani(prev, char):
             master.update()
             time.sleep(0.001)
 
+    # Animation to show the checkmark button
     if (entry == 1):
         rrgb = 18
         grgb = 18
@@ -190,16 +195,21 @@ def resize():
     global nextplace
     for i in range(0, 5):
         boxes[i].place(x=(master.winfo_width() / 2 - ((i - 2) * -75)), anchor=N)
+
     for f in range(0, len(clonehandlerlist)):
         clonehandlerlist[f].place(x=(master.winfo_width() / 2 - (((f - ((math.ceil((f + 1) / 5) - 1) * 5)) - 2) * -75)), anchor=N)
+
     if nextplace:
         nextbutton.place(y=(master.winfo_height() - 80), x=(master.winfo_width() / 2), anchor=N)
+
     watermark.place(relx=0.5, y=(master.winfo_height() - 5), anchor=S)
+
     if entry >= 1:
         finishbutton.place(x=(master.winfo_width() / 2), y=(master.winfo_height() - 123), anchor=N)
+
     instructions.place(x=(master.winfo_width() / 2), y=180, anchor=N)
 
-# Function to run when the check-mark button is pressed
+# Function to run when the check-mark button is pressed - Define all characters as green and update colors
 def finish():
     global charmap
     charmap = ["2", "2", "2", "2", "2"]
@@ -219,18 +229,24 @@ def nextfunc():
     global charmap
     global tutorialsteps
     global runningani
-    debug()
 
+    # Don't run the function twice at once because as wyatt proved it causes errors
     if not runningani:
         runningani = True
+
+        # Return win if all blocks are green
         if (not "0" in charmap) and (not "1" in charmap):
             nextbutton.config(text="Winner!")
+
+        # Go to next if they aren't
         elif (entry < 4) and (len(userinput) == 5):
 
+            # If the tutorial isn't done yet, mark it as finshed and update GUI
             if tutorialsteps != "ggb":
                 tutorialsteps = "ggg"
                 hidetutorial()
 
+            # Reset GUI and apply new word
             readcharmap()
             allwords = sortgrayyellowgreen(allwords, badletters, yellowletters, letters)
             prevuserimput = userinput
@@ -247,6 +263,7 @@ def nextfunc():
                 boxes[i].config(text="")
             newwordani(prevuserimput, prevcharmap)
 
+        # If the input isn't complete, play button vibrating animation
         elif nextplace:
             nextplace = False
             pos = 0
@@ -280,8 +297,11 @@ def onKeyPress(event):
     global userinput
     global boxes
     global tutorialsteps
+
+    #Another part of the tutorial, needs to update tutorial string
     tutorialsteps = "g" + tutorialsteps[1] + tutorialsteps[2]
 
+    # .isalpha() determines if the key pressed is a letter or not
     if entry == 0:
         if (event.char).isalpha() and (len(userinput) <= 4):
             userinput.append(event.char)
