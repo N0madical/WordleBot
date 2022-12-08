@@ -15,6 +15,7 @@ master.title("Wordle Solver")
 pixeler = tkinter.PhotoImage(width=1, height=1)
 clonehandlerlist = []
 tutorialsteps = "bbg"
+runningani = False
 
 Label(master, text="Wordle Bot", font="Verdana 35 bold", fg="white", bg="#121213").place(relx=0.5, y=5, anchor=N)
 watermark = Label(master, text="Wordle Solver By Aiden C For Comp Sci 2022", font="Verdana 7", fg="white", bg="#121213")
@@ -38,8 +39,8 @@ nextplace = True
 def hidetutorial():
     global tutorialsteps
     global entry
-    print(tutorialsteps, entry)
     if (not "b" in tutorialsteps) and (entry == 0):
+        tutorialsteps = "ggb"
         rrgb = 255
         grgb = 255
         brgb = 255
@@ -52,7 +53,6 @@ def hidetutorial():
             grgb = grgb - int(((255 - 18) / frames))
             brgb = brgb - int(((255 - 19) / frames))
         instructions.config(fg="#121213")
-        tutorialsteps = "ggb"
 
 def debug():
     global letters
@@ -207,55 +207,62 @@ def nextfunc():
     global userinput
     global charmap
     global tutorialsteps
+    global runningani
     debug()
-    if (not "0" in charmap) and (not "1" in charmap):
-        nextbutton.config(text="Winner!")
-    elif (entry < 4) and (len(userinput) == 5):
-        tutorialsteps = "ggg"
-        hidetutorial()
 
-        readcharmap()
-        allwords = sortgrayyellowgreen(allwords, badletters, yellowletters, letters)
-        prevuserimput = userinput
-        prevcharmap = charmap
-        yellowletters = ["", "", "", "", ""]
-        userinput = []
-        charmap = ["0", "0", "0", "0", "0"]
-        entry += 1
-        temptop = topword(allwords)
-        for j in range(0, 5):
-            userinput.append(temptop[j])
-        for i in range(0, 5):
-            boxes[i].config(bg="#3a3a3c", activebackground="#3a3a3c")
-            boxes[i].config(text="")
-        newwordani(prevuserimput, prevcharmap)
+    if not runningani:
+        runningani = True
+        if (not "0" in charmap) and (not "1" in charmap):
+            nextbutton.config(text="Winner!")
+        elif (entry < 4) and (len(userinput) == 5):
 
-    elif nextplace:
-        nextplace = False
-        pos = 0
-        for r in range(0, 20):
-            pos += 1
-            nextbutton.place(x=((master.winfo_width() / 2) + pos))
-            master.update()
-            time.sleep(0.001)
-        for t in range(0, 2):
-            for k in range(0, 40):
-                pos -= 1
-                nextbutton.place(x=((master.winfo_width() / 2) + pos))
-                master.update()
-                time.sleep(0.001)
-            for k in range(0, 40):
+            if tutorialsteps != "ggb":
+                tutorialsteps = "ggg"
+                hidetutorial()
+
+            readcharmap()
+            allwords = sortgrayyellowgreen(allwords, badletters, yellowletters, letters)
+            prevuserimput = userinput
+            prevcharmap = charmap
+            yellowletters = ["", "", "", "", ""]
+            userinput = []
+            charmap = ["0", "0", "0", "0", "0"]
+            entry += 1
+            temptop = topword(allwords)
+            for j in range(0, 5):
+                userinput.append(temptop[j])
+            for i in range(0, 5):
+                boxes[i].config(bg="#3a3a3c", activebackground="#3a3a3c")
+                boxes[i].config(text="")
+            newwordani(prevuserimput, prevcharmap)
+
+        elif nextplace:
+            nextplace = False
+            pos = 0
+            for r in range(0, 20):
                 pos += 1
                 nextbutton.place(x=((master.winfo_width() / 2) + pos))
                 master.update()
                 time.sleep(0.001)
-        for r in range(0, 20):
-            pos -= 1
-            nextbutton.place(x=((master.winfo_width() / 2) + pos))
-            master.update()
-            time.sleep(0.001)
-        nextbutton.place(x=(master.winfo_width() / 2))
-        nextplace = True
+            for t in range(0, 2):
+                for k in range(0, 40):
+                    pos -= 1
+                    nextbutton.place(x=((master.winfo_width() / 2) + pos))
+                    master.update()
+                    time.sleep(0.001)
+                for k in range(0, 40):
+                    pos += 1
+                    nextbutton.place(x=((master.winfo_width() / 2) + pos))
+                    master.update()
+                    time.sleep(0.001)
+            for r in range(0, 20):
+                pos -= 1
+                nextbutton.place(x=((master.winfo_width() / 2) + pos))
+                master.update()
+                time.sleep(0.001)
+            nextbutton.place(x=(master.winfo_width() / 2))
+            nextplace = True
+        runningani = False
 
 
 def onKeyPress(event):
