@@ -1,5 +1,7 @@
 # Wordle cheater program by Aiden C
 # Built for Comp Sci 12/1/2022
+
+# Importing
 import sorters
 from sorters import *
 import tkinter
@@ -7,35 +9,44 @@ from tkinter import *
 import time
 import math
 
+# Defining Window
 master = Tk()
 master.configure(bg="#121213")
 master.geometry("400x600")
 master.title("Wordle Solver")
 
+# Prereqs for tkinter
 pixeler = tkinter.PhotoImage(width=1, height=1)
 clonehandlerlist = []
-tutorialsteps = "bbg"
-runningani = False
 
+# Define non-changing tkinter widgets
 Label(master, text="Wordle Bot", font="Verdana 35 bold", fg="white", bg="#121213").place(relx=0.5, y=5, anchor=N)
 watermark = Label(master, text="Wordle Solver By Aiden C For Comp Sci 2022", font="Verdana 7", fg="white", bg="#121213")
 Frame(master, bg="#3a3a3c").place(relx=0.5, y=75, relwidth=1, height=2, anchor=N)
 finishbutton = Button(master, width=25, height=25, font="Verdana 20 bold", bg="#121213", activebackground="#121213", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: finish())
 instructions = Label(master, text="Use the keyboard to type in your first word \n Click the gray squares until they match wordle!", fg="white", font="Verdana 10 bold", bg="#121213")
 
+# Read text file
 with open('fivewords.txt') as words:
     allwords = words.readlines()
 allwords = [x.strip().lower() for x in allwords]
 
+# Pre-Defining Computer Analysis Variables
 badletters = []
 letters = ["", "", "", "", ""]
 yellowletters = ["", "", "", "", ""]
 
+# Pre-Defining user input variables
 userinput = []
 charmap = ["0", "0", "0", "0", "0"]
+
+# Pre-Defining Global Variables
 entry = 0
 nextplace = True
+tutorialsteps = "bbg"
+runningani = False
 
+# Function to play tutorial hide animation
 def hidetutorial():
     global tutorialsteps
     global entry
@@ -54,6 +65,7 @@ def hidetutorial():
             brgb = brgb - int(((255 - 19) / frames))
         instructions.config(fg="#121213")
 
+# Optional debug function for debugging - prints all important variables
 def debug():
     global letters
     global letters
@@ -68,7 +80,7 @@ def debug():
     print("Mapped Colors: " + str(charmap))
     print("All Words: " + str(allwords))
 
-
+# Function to read the user's input
 def readcharmap():
     global badletters
     global yellowletters
@@ -87,7 +99,7 @@ def readcharmap():
             letters[viewdnum] = userinput[viewdnum]
         viewdnum += 1
 
-
+# Function to change color of UI boxes in gui
 def changecolor(box):
     global clonehandlerlist
     global charmap
@@ -107,7 +119,7 @@ def changecolor(box):
 
     hidetutorial()
 
-
+# Function I got off of the internet to clone widgets (I barely know how it works)
 def clone(widget):
     parent = widget.nametowidget(widget.winfo_parent())
     cls = widget.__class__
@@ -117,7 +129,7 @@ def clone(widget):
         clone.configure({key: widget.cget(key)})
     return clone
 
-
+# Function to animate the pressing of the next button
 def newwordani(prev, char):
     global userinput
     global entry
@@ -165,16 +177,15 @@ def newwordani(prev, char):
             brgb = brgb + int(((78 - 19) / frames))
         finishbutton.config(text="✓")
 
-
+# Defining changing GUI widgets
 box1 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(0))
 box2 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(1))
 box3 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(2))
 box4 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(3))
 box5 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(4))
-
 nextbutton = Button(master, text="Next", width=200, height=50, font="Verdana 30 bold", bg="#538d4e", activebackground="#538d4e", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: nextfunc())
 
-
+# Function to dynamically move widgets upon GUI window size change
 def resize():
     global nextplace
     for i in range(0, 5):
@@ -188,7 +199,7 @@ def resize():
         finishbutton.place(x=(master.winfo_width() / 2), y=(master.winfo_height() - 123), anchor=N)
     instructions.place(x=(master.winfo_width() / 2), y=180, anchor=N)
 
-
+# Function to run when the check-mark button is pressed
 def finish():
     global charmap
     charmap = ["2", "2", "2", "2", "2"]
@@ -196,7 +207,7 @@ def finish():
     for i in range(0, 5):
         boxes[i].config(bg="#538d4e", activebackground="#538d4e")
 
-
+# Function to run when the next button is pressed
 def nextfunc():
     global entry
     global nextplace
@@ -264,7 +275,7 @@ def nextfunc():
             nextplace = True
         runningani = False
 
-
+# Read and apply keypresses
 def onKeyPress(event):
     global userinput
     global boxes
@@ -288,13 +299,16 @@ def onKeyPress(event):
 
     hidetutorial()
 
-
+# Array that defines box variable names for box cloning
 boxes = [box1, box2, box3, box4, box5]
 
+# Setting the initial y position of the first boxes
 for i in range(0, 5):
     boxes[i].place(y=100)
 
+# Binding tkinter listeners to functions
 master.bind("<Configure>", lambda event: resize())
 master.bind('<KeyPress>', onKeyPress)
 
+# Start the gui!
 mainloop()
