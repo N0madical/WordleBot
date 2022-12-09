@@ -1,6 +1,9 @@
 # Wordle cheater program by Aiden C
 # Built for Comp Sci 12/1/2022
 
+# --------------------- ATTENTION: For Debuging Set To True
+debugistrue = True
+
 # Importing
 import sorters
 from sorters import *
@@ -12,7 +15,7 @@ import math
 # Defining Window
 master = Tk()
 master.configure(bg="#121213")
-master.geometry("400x600")
+master.geometry("400x675")
 master.title("Wordle Solver")
 
 # Prereqs for tkinter
@@ -35,7 +38,6 @@ allwords = [x.strip().lower() for x in allwords]
 badletters = []
 letters = ["", "", "", "", ""]
 yellowletters = ["", "", "", "", ""]
-debugistrue = False
 
 # Pre-Defining user input variables
 userinput = []
@@ -245,7 +247,7 @@ def nextfunc():
             nextbutton.config(text="Winner!")
 
         # Go to next if they aren't
-        elif (entry < 4) and (len(userinput) == 5):
+        elif (entry < 5) and (len(userinput) == 5):
 
             # If the tutorial isn't done yet, mark it as finshed and update GUI
             if tutorialsteps != "ggb":
