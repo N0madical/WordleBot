@@ -1,6 +1,6 @@
 import random
 
-def sortgrayyellowgreen(allwords, gray, yellow, green):
+def sortgrayyellowgreen(allwords, gray, yellow, green, debug):
 
     tempwords = []
     for word in allwords:
@@ -11,6 +11,8 @@ def sortgrayyellowgreen(allwords, gray, yellow, green):
             if (letter != word[j]) and (letter != ""):
                 # print(letter + word[j])
                 delword = True
+                if debug:
+                    print("Deleted \"" + word + "\" because it did not contain the green letter \"" + letter + "\".")
             j += 1
 
         j = 0
@@ -19,14 +21,20 @@ def sortgrayyellowgreen(allwords, gray, yellow, green):
                 for letter in lettergroup:
                     if letter not in word:
                         delword = True
+                        if debug:
+                            print ("Deleted \"" + word + "\" because it did not contain the yellow letter \"" + letter + "\".")
                     if (letter == word[j]):
                         # print(letter + word[j])
                         delword = True
+                        if debug:
+                            print ("Deleted \"" + word + "\" because it contained the yellow letter \"" + letter + "\" but at the position it was previously at.")
             j += 1
 
         for letter in gray:
-            if letter in word:
+            if (letter in word):
                 delword = True
+                if debug:
+                    print("Deleted \"" + word + "\" because it contained the gray letter \"" + letter + "\".")
 
         if not delword:
             tempwords.append(word)

@@ -35,6 +35,7 @@ allwords = [x.strip().lower() for x in allwords]
 badletters = []
 letters = ["", "", "", "", ""]
 yellowletters = ["", "", "", "", ""]
+debugistrue = False
 
 # Pre-Defining user input variables
 userinput = []
@@ -73,12 +74,15 @@ def debug():
     global userinput
     global charmap
     global allwords
+    global debugistrue
+    debugistrue = True
     print("Green Letters: " + str(letters))
     print("Yellow Letters: " + str(yellowletters))
     print("Grey Letters: " + str(badletters))
     print("Current Input: " + str(userinput))
     print("Mapped Colors: " + str(charmap))
-    print("All Words: " + str(allwords))
+    if len(allwords) < 50:
+        print("All Words: " + str(allwords))
 
 # Function to read the user's input
 def readcharmap():
@@ -98,6 +102,7 @@ def readcharmap():
         if char == "2":
             letters[viewdnum] = userinput[viewdnum]
         viewdnum += 1
+    print(yellowletters)
 
 # Function to change color of UI boxes in gui
 def changecolor(box):
@@ -229,6 +234,7 @@ def nextfunc():
     global charmap
     global tutorialsteps
     global runningani
+    debug()
 
     # Don't run the function twice at once because as wyatt proved it causes errors
     if not runningani:
@@ -248,7 +254,7 @@ def nextfunc():
 
             # Reset GUI and apply new word
             readcharmap()
-            allwords = sortgrayyellowgreen(allwords, badletters, yellowletters, letters)
+            allwords = sortgrayyellowgreen(allwords, badletters, yellowletters, letters, debugistrue)
             prevuserimput = userinput
             prevcharmap = charmap
             yellowletters = ["", "", "", "", ""]
