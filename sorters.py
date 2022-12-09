@@ -75,8 +75,11 @@ def topword(allwords, debug):
         if word in commonwords:
             common = True
             temp.append(word)
+
     if not common:
         temp = allwords
+    elif debug:
+        print ("\nCommon words: " + str(temp))
 
     if debug:
         print("\nSorting words based on vowel counts:")
@@ -104,6 +107,8 @@ def topword(allwords, debug):
         return "-----"
     else:
         if len(returnlist) == 1:
+            if debug:
+                print("\nFinal word:")
             return returnlist[0]
         else:
             if debug:

@@ -1,7 +1,7 @@
 # Wordle cheater program by Aiden C
 # Built for Comp Sci 12/1/2022
 
-# --------------------- ATTENTION: For Debuging Set To True
+# --------------------- ATTENTION: For Debuging In Console Set To True:
 debugistrue = True
 
 # Importing
@@ -40,6 +40,8 @@ badletters = []
 letters = ["", "", "", "", ""]
 yellowletters = ["", "", "", "", ""]
 debugyellowletters = []
+if not debugistrue:
+    print("\nOutputs:")
 
 # Pre-Defining user input variables
 userinput = []
@@ -353,7 +355,7 @@ def nextfunc():
             charmap = ["0", "0", "0", "0", "0"]
             entry += 1
             temptop = topword(allwords, debugistrue)
-            print(temptop)
+            print("- " + str(temptop))
             for j in range(0, 5):
                 userinput.append(temptop[j])
             for i in range(0, 5):
