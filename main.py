@@ -15,7 +15,7 @@ import math
 # Defining Window
 master = Tk()
 master.configure(bg="#121213")
-master.geometry("400x675")
+master.geometry("400x630")
 master.title("Wordle Solver")
 
 # Prereqs for tkinter
@@ -28,6 +28,7 @@ watermark = Label(master, text="Wordle Solver By Aiden C For Comp Sci 2022", fon
 Frame(master, bg="#3a3a3c").place(relx=0.5, y=75, relwidth=1, height=2, anchor=N)
 finishbutton = Button(master, width=25, height=25, font="Verdana 20 bold", bg="#121213", activebackground="#121213", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: finish())
 instructions = Label(master, text="Use the keyboard to type in your first word \n Click the gray squares until they match wordle!", fg="white", font="Verdana 10 bold", bg="#121213")
+restartbutton = Button(master, width=25, height=25, font="Verdana 20 bold", bg="#121213", activebackground="#121213", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: reload())
 
 # Read text file
 with open('fivewords.txt') as words:
@@ -48,6 +49,71 @@ entry = 0
 nextplace = True
 tutorialsteps = "bbg"
 runningani = False
+
+def reload():
+    global entry
+    global nextplace
+    global tutorialsteps
+    global runningani
+    global userinput
+    global charmap
+    global yellowletters
+    global letters
+    global badletters
+    global allwords
+    global clonehandlerlist
+    global boxes
+    with open('fivewords.txt') as words:
+        allwords = words.readlines()
+    allwords = [x.strip().lower() for x in allwords]
+
+    rrgb = 58
+    grgb = 58
+    brgb = 60
+    frames = 20
+    for p in range(0, frames):
+        for i in range (0,len(clonehandlerlist)):
+            clonehandlerlist[i].config(text="")
+            clonehandlerlist[i].config(bg="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))), activebackground="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))))
+        master.update()
+        time.sleep(0.01)
+        rrgb = rrgb - int(((58 - 18) / frames))
+        grgb = grgb - int(((58 - 18) / frames))
+        brgb = brgb - int(((60 - 19) / frames))
+    for i in range (0,len(clonehandlerlist)):
+        clonehandlerlist[i].destroy()
+    clonehandlerlist = []
+    badletters = []
+    letters = ["", "", "", "", ""]
+    yellowletters = ["", "", "", "", ""]
+    userinput = []
+    charmap = ["0", "0", "0", "0", "0"]
+    nextplace = True
+    tutorialsteps = "bbg"
+    runningani = False
+    frames2 = 10
+    for j in range (0,frames2):
+        for f in range (0,5):
+            boxes[f].place(y=(100 + (75*entry) - ((75 * entry) / frames2) * j))
+        master.update()
+        time.sleep(0.01)
+    for f in range (0,5):
+        boxes[f].place(y=100)
+        boxes[f].config(text="", bg="#3a3a3c", activebackground="#3a3a3c")
+    entry = 0
+    rrgb = 18
+    grgb = 18
+    brgb = 19
+    frames = 50
+    for p in range(0, frames):
+        instructions.config(fg="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))))
+        master.update()
+        time.sleep(0.01)
+        rrgb = rrgb + int(((255 - 18) / frames))
+        grgb = grgb + int(((255 - 18) / frames))
+        brgb = brgb + int(((255 - 19) / frames))
+    instructions.config(fg="#FFFFFF")
+
 
 # Function to play tutorial hide animation
 def hidetutorial():
@@ -182,12 +248,14 @@ def newwordani(prev, char):
         frames = 20
         for p in range(0, frames):
             finishbutton.config(bg="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))), activebackground="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))))
+            restartbutton.config(bg="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))), activebackground="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))))
             master.update()
             time.sleep(0.01)
             rrgb = rrgb + int(((83 - 18) / frames))
             grgb = grgb + int(((141 - 18) / frames))
             brgb = brgb + int(((78 - 19) / frames))
         finishbutton.config(text="✓")
+        restartbutton.config(text="↺")
 
 # Defining changing GUI widgets
 box1 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(0))
@@ -212,7 +280,8 @@ def resize():
     watermark.place(relx=0.5, y=(master.winfo_height() - 5), anchor=S)
 
     if entry >= 1:
-        finishbutton.place(x=(master.winfo_width() / 2), y=(master.winfo_height() - 123), anchor=N)
+        finishbutton.place(x=(master.winfo_width() / 2) - 175, y=(master.winfo_height() - 40), anchor=N)
+        restartbutton.place(x=(master.winfo_width() / 2) + 175, y=(master.winfo_height() - 40), anchor=N)
 
     instructions.place(x=(master.winfo_width() / 2), y=180, anchor=N)
 
