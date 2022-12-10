@@ -27,7 +27,7 @@ Label(master, text="Wordle Bot", font="Verdana 35 bold", fg="white", bg="#121213
 watermark = Label(master, text="Wordle Solver By Aiden C For Comp Sci 2022", font="Verdana 7", fg="white", bg="#121213")
 Frame(master, bg="#3a3a3c").place(relx=0.5, y=75, relwidth=1, height=2, anchor=N)
 finishbutton = Button(master, width=25, height=25, font="Verdana 20 bold", bg="#121213", activebackground="#121213", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: finish())
-instructions = Label(master, text="Use the keyboard to type in your first word \n Click the gray squares until they match wordle!", fg="white", font="Verdana 10 bold", bg="#121213")
+instructions = Label(master, text="Use the keyboard to type in your first word \n Click the gray squares until they match wordle! \n You get to pick your own starter word", fg="white", font="Verdana 10 bold", bg="#121213")
 restartbutton = Button(master, width=25, height=25, font="Verdana 20 bold", bg="#121213", activebackground="#121213", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: reload())
 
 # Read text file
