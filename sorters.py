@@ -1,7 +1,6 @@
-import random
-
 def sortgrayyellowgreen(allwords, gray, yellow, green, debug):
-
+    if debug:
+        print("\nModifications Log:")
     tempwords = []
     for word in allwords:
         delword = False
@@ -41,15 +40,35 @@ def sortgrayyellowgreen(allwords, gray, yellow, green, debug):
 
     return tempwords
 
-def topword(allwords):
+def topword(allwords, debug):
     temp = []
     returnlist = []
     vowels = ["a", "e", "i", "o", "u"]
+    letterrank = []
+    topletters = []
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
     topscore = 0
 
     with open('commonwords.txt') as cmnwords:
         commonwords = cmnwords.readlines()
     commonwords = [x.strip().lower() for x in commonwords]
+
+    for i in range (0,len(alphabet)):
+        letterrank.append(0)
+
+    for eachword in commonwords:
+        for eachletter in eachword:
+            letterrank[alphabet.index(eachletter)] += 1
+
+    for i in range (0,26):
+        topindex = 0
+        topindexvalue = 0
+        for j in range (0,26):
+            if letterrank[j] > topindexvalue:
+                if alphabet[j] not in topletters:
+                    topindexvalue = letterrank[j]
+                    topindex = j
+        topletters.append(alphabet[topindex])
 
     common = False
     for word in allwords:
@@ -59,6 +78,8 @@ def topword(allwords):
     if not common:
         temp = allwords
 
+    if debug:
+        print("\nSorting words based on vowel counts:")
     for word in temp:
         tempscore = 0
         templetterstore = []
@@ -68,15 +89,51 @@ def topword(allwords):
                 templetterstore.append(letter)
         if tempscore == topscore:
             returnlist.append(word)
+            if debug:
+                print("Added '" + word + "' to list of top vowel words because it tied for top with " + str(tempscore) + " vowels.")
         if tempscore > topscore:
             returnlist = [word]
             topscore = tempscore
+            if debug:
+                print("Reset the top vowel words list because '" + word + "' had " + str(tempscore) + " vowels, more then previously scanned words.")
+    if debug:
+        print ("\nWord list sorted based on vowels:")
+        print (returnlist)
 
     if not returnlist:
         return "-----"
     else:
-        return random.choice(returnlist)
+        if len(returnlist) == 1:
+            return returnlist[0]
+        else:
+            if debug:
+                print("\nDuplicate vowel amounts occurred, further narrowing based on letter frequency:")
+            temp2 = []
+            topscore = 0
+            tempscore = 0
+            templetterstore = []
+            for word in returnlist:
+                explination = word + " - "
+                templetterstore = []
+                tempscore = 0
+                for letter in word:
+                    if letter not in templetterstore:
+                        tempscore = tempscore + (27 - topletters.index(letter))
+                        explination =  explination + "added " + letter + " for " + str(27 - topletters.index(letter)) + " points - "
+                    if letter in templetterstore:
+                        tempscore = tempscore + (0 - topletters.index(letter))
+                        explination = explination + "penalized duplicate " + letter + " for " + str(-27 + topletters.index(letter)) + " points - "
+                    templetterstore.append(letter)
+                if tempscore > topscore:
+                    topscore = tempscore
+                    temp2 = [word]
+                if tempscore == topscore:
+                    temp2.append(word)
+                if debug:
+                    print (explination + "final score: " + str(tempscore))
+            if debug:
+                print("\nFinal word:")
+            return temp2[0]
 
 def rgb_to_hex(rgb):
     return '%02x%02x%02x' % rgb
-rgb_to_hex((255, 255, 195))

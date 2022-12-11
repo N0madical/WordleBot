@@ -39,6 +39,7 @@ allwords = [x.strip().lower() for x in allwords]
 badletters = []
 letters = ["", "", "", "", ""]
 yellowletters = ["", "", "", "", ""]
+debugyellowletters = []
 
 # Pre-Defining user input variables
 userinput = []
@@ -49,6 +50,7 @@ entry = 0
 nextplace = True
 tutorialsteps = "bbg"
 runningani = False
+
 
 def reload():
     global entry
@@ -72,7 +74,7 @@ def reload():
     brgb = 60
     frames = 20
     for p in range(0, frames):
-        for i in range (0,len(clonehandlerlist)):
+        for i in range(0, len(clonehandlerlist)):
             clonehandlerlist[i].config(text="")
             clonehandlerlist[i].config(bg="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))), activebackground="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))))
         master.update()
@@ -80,7 +82,7 @@ def reload():
         rrgb = rrgb - int(((58 - 18) / frames))
         grgb = grgb - int(((58 - 18) / frames))
         brgb = brgb - int(((60 - 19) / frames))
-    for i in range (0,len(clonehandlerlist)):
+    for i in range(0, len(clonehandlerlist)):
         clonehandlerlist[i].destroy()
     clonehandlerlist = []
     badletters = []
@@ -92,12 +94,12 @@ def reload():
     tutorialsteps = "bbg"
     runningani = False
     frames2 = 10
-    for j in range (0,frames2):
-        for f in range (0,5):
-            boxes[f].place(y=(100 + (75*entry) - ((75 * entry) / frames2) * j))
+    for j in range(0, frames2):
+        for f in range(0, 5):
+            boxes[f].place(y=(100 + (75 * entry) - ((75 * entry) / frames2) * j))
         master.update()
         time.sleep(0.01)
-    for f in range (0,5):
+    for f in range(0, 5):
         boxes[f].place(y=100)
         boxes[f].config(text="", bg="#3a3a3c", activebackground="#3a3a3c")
     entry = 0
@@ -113,12 +115,14 @@ def reload():
         grgb = grgb + int(((255 - 18) / frames))
         brgb = brgb + int(((255 - 19) / frames))
     instructions.config(fg="#FFFFFF")
+    nextbutton.config(text="Next")
 
 
 # Function to play tutorial hide animation
 def hidetutorial():
     global tutorialsteps
     global entry
+    global runningani
     if (not "b" in tutorialsteps) and (entry == 0):
         tutorialsteps = "ggb"
         rrgb = 255
@@ -126,13 +130,15 @@ def hidetutorial():
         brgb = 255
         frames = 50
         for p in range(0, frames):
-            instructions.config(fg="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))))
-            master.update()
-            time.sleep(0.01)
-            rrgb = rrgb - int(((255 - 18) / frames))
-            grgb = grgb - int(((255 - 18) / frames))
-            brgb = brgb - int(((255 - 19) / frames))
+            if instructions["fg"] != "#121213":
+                instructions.config(fg="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))))
+                master.update()
+                time.sleep(0.01)
+                rrgb = rrgb - int(((255 - 18) / frames))
+                grgb = grgb - int(((255 - 18) / frames))
+                brgb = brgb - int(((255 - 19) / frames))
         instructions.config(fg="#121213")
+
 
 # Optional debug function for debugging - prints all important variables
 def debug():
@@ -143,14 +149,15 @@ def debug():
     global charmap
     global allwords
     global debugistrue
-    debugistrue = True
-    print("Green Letters: " + str(letters))
-    print("Yellow Letters: " + str(yellowletters))
-    print("Grey Letters: " + str(badletters))
-    print("Current Input: " + str(userinput))
-    print("Mapped Colors: " + str(charmap))
-    if len(allwords) < 50:
-        print("All Words: " + str(allwords))
+    if debugistrue:
+        print("\n-------------------------------------------------------------------- Screen Currently Displaying: " + str(userinput) + " --------------------------------------------------------------------------")
+        print("Mapped Colors: " + str(charmap))
+        print("\nGreen Letters: " + str(letters))
+        print("Yellow Letters: " + str(debugyellowletters))
+        print("Grey Letters: " + str(badletters))
+        if len(allwords) < 50:
+            print("\nAll Words: " + str(allwords))
+
 
 # Function to read the user's input
 def readcharmap():
@@ -159,18 +166,20 @@ def readcharmap():
     global letters
     global userinput
     global charmap
+    global debugyellowletters
     viewdnum = 0
     for char in charmap:
         if char == "0":
             if userinput[viewdnum] not in letters:
                 badletters.append(userinput[viewdnum])
         if char == "1":
-            print(viewdnum)
             yellowletters[viewdnum] = (yellowletters[viewdnum] + userinput[viewdnum])
         if char == "2":
             letters[viewdnum] = userinput[viewdnum]
+            if letters[viewdnum] in badletters:
+                badletters.remove(letters[viewdnum])
         viewdnum += 1
-    print(yellowletters)
+    debugyellowletters = yellowletters
 
 # Function to change color of UI boxes in gui
 def changecolor(box):
@@ -194,6 +203,7 @@ def changecolor(box):
 
     hidetutorial()
 
+
 # Function I got off of the internet to clone widgets (I barely know how it works)
 def clone(widget):
     parent = widget.nametowidget(widget.winfo_parent())
@@ -203,6 +213,7 @@ def clone(widget):
     for key in widget.configure():
         clone.configure({key: widget.cget(key)})
     return clone
+
 
 # Function to animate the pressing of the next button
 def newwordani(prev, char):
@@ -257,6 +268,7 @@ def newwordani(prev, char):
         finishbutton.config(text="✓")
         restartbutton.config(text="↺")
 
+
 # Defining changing GUI widgets
 box1 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(0))
 box2 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(1))
@@ -264,6 +276,7 @@ box3 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c",
 box4 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(3))
 box5 = Button(master, width=60, height=60, font="Verdana 30 bold", bg="#3a3a3c", activebackground="#3a3a3c", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: changecolor(4))
 nextbutton = Button(master, text="Next", width=200, height=50, font="Verdana 30 bold", bg="#538d4e", activebackground="#538d4e", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: nextfunc())
+
 
 # Function to dynamically move widgets upon GUI window size change
 def resize():
@@ -285,6 +298,7 @@ def resize():
 
     instructions.place(x=(master.winfo_width() / 2), y=180, anchor=N)
 
+
 # Function to run when the check-mark button is pressed - Define all characters as green and update colors
 def finish():
     global charmap
@@ -292,6 +306,7 @@ def finish():
     nextbutton.config(text="Winner!")
     for i in range(0, 5):
         boxes[i].config(bg="#538d4e", activebackground="#538d4e")
+
 
 # Function to run when the next button is pressed
 def nextfunc():
@@ -305,6 +320,9 @@ def nextfunc():
     global charmap
     global tutorialsteps
     global runningani
+    global debugyellowletters
+    if debugistrue:
+        print ("\n\n\n")
     debug()
 
     # Don't run the function twice at once because as wyatt proved it causes errors
@@ -322,6 +340,8 @@ def nextfunc():
             if tutorialsteps != "ggb":
                 tutorialsteps = "ggg"
                 hidetutorial()
+            else:
+                instructions.config(fg="#121213")
 
             # Reset GUI and apply new word
             readcharmap()
@@ -332,7 +352,8 @@ def nextfunc():
             userinput = []
             charmap = ["0", "0", "0", "0", "0"]
             entry += 1
-            temptop = topword(allwords)
+            temptop = topword(allwords, debugistrue)
+            print(temptop)
             for j in range(0, 5):
                 userinput.append(temptop[j])
             for i in range(0, 5):
@@ -369,32 +390,36 @@ def nextfunc():
             nextplace = True
         runningani = False
 
+
 # Read and apply keypresses
 def onKeyPress(event):
     global userinput
     global boxes
     global tutorialsteps
 
-    #Another part of the tutorial, needs to update tutorial string
+    # Another part of the tutorial, needs to update tutorial string
     tutorialsteps = "g" + tutorialsteps[1] + tutorialsteps[2]
 
     # .isalpha() determines if the key pressed is a letter or not
-    if entry == 0:
-        if (event.char).isalpha() and (len(userinput) <= 4):
-            userinput.append(event.char)
-        elif (event.char) == "\x08":
-            userinput = userinput[:-1]
-        elif (event.char) == "\r":
-            nextfunc()
-        for i in range(0, 5):
-            if len(userinput) > i:
-                boxes[i].config(text=str(userinput[i]))
-            else:
-                boxes[i].config(text="")
+    #if entry == 0:
+    if (event.char).isalpha() and (len(userinput) <= 4):
+        userinput.append(event.char)
+    elif (event.char) == "\x08":
+        userinput = userinput[:-1]
     elif (event.char) == "\r":
         nextfunc()
+    elif (event.char) == "1" or (event.char) == "2" or (event.char) == "3" or (event.char) == "4" or (event.char) == "5":
+        changecolor(int(event.char)-1)
+    for i in range(0, 5):
+        if len(userinput) > i:
+            boxes[i].config(text=str(userinput[i]))
+        else:
+            boxes[i].config(text="")
+    #elif (event.char) == "\r":
+        #nextfunc()
 
     hidetutorial()
+
 
 # Array that defines box variable names for box cloning
 boxes = [box1, box2, box3, box4, box5]
