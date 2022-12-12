@@ -1,7 +1,7 @@
 # Wordle cheater program by Aiden C
 # Built for Comp Sci 12/1/2022
 
-# --------------------- ATTENTION: For Debuging In Console Set To True:
+# --------------------- ATTENTION: For Debugging In Console Set To True:
 debugistrue = True
 
 # Importing
