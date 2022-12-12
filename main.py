@@ -11,6 +11,14 @@ import tkinter
 from tkinter import *
 import time
 import math
+import os
+
+#Rescheduling Windows Timer Issues
+
+if os.name == "nt":
+    from ctypes import windll
+    timeBeginPeriod = windll.winmm.timeBeginPeriod
+    timeBeginPeriod(1)
 
 # Defining Window
 master = Tk()
@@ -26,9 +34,9 @@ clonehandlerlist = []
 Label(master, text="Wordle Bot", font="Verdana 35 bold", fg="white", bg="#121213").place(relx=0.5, y=5, anchor=N)
 watermark = Label(master, text="Wordle Solver By Aiden C For Comp Sci 2022", font="Verdana 7", fg="white", bg="#121213")
 Frame(master, bg="#3a3a3c").place(relx=0.5, y=75, relwidth=1, height=2, anchor=N)
-finishbutton = Button(master, width=25, height=25, font="Verdana 20 bold", bg="#121213", activebackground="#121213", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: finish())
+finishbutton = Button(master, width=25, height=25, font="Verdana 18 bold", bg="#121213", activebackground="#121213", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: finish())
 instructions = Label(master, text="Use the keyboard to type in your first word \n Click the gray squares until they match wordle! \n You get to pick your own starter word", fg="white", font="Verdana 10 bold", bg="#121213")
-restartbutton = Button(master, width=25, height=25, font="Verdana 20 bold", bg="#121213", activebackground="#121213", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: reload())
+restartbutton = Button(master, width=25, height=25, font="Verdana 18 bold", bg="#121213", activebackground="#121213", activeforeground="lightgrey", highlightthickness=0, bd=0, fg="white", compound="center", padx=0, pady=0, image=pixeler, command=lambda: reload())
 
 # Read text file
 with open('fivewords.txt') as words:
@@ -130,7 +138,7 @@ def hidetutorial():
         rrgb = 255
         grgb = 255
         brgb = 255
-        frames = 50
+        frames = 25
         for p in range(0, frames):
             if instructions["fg"] != "#121213":
                 instructions.config(fg="#%s" % (sorters.rgb_to_hex((rrgb, grgb, brgb))))
@@ -242,11 +250,11 @@ def newwordani(prev, char):
             tempxconfig[u].config(bg="#538d4e", activebackground="#538d4e")
 
     # New boxes animation
-    for k in range(0, 75):
+    for k in range(0, 25):
         for h in range(0, 5):
-            boxes[h].place(y=((100 + ((entry - 1) * 75)) + k))
+            boxes[h].place(y=((100 + ((entry - 1) * 75)) + (k*3)))
             master.update()
-            time.sleep(0.0001)
+            time.sleep(0.001)
     for i in range(0, 5):
         boxes[i].config(text=userinput[i])
         for j in range(1, 30):
@@ -368,24 +376,24 @@ def nextfunc():
         elif nextplace:
             nextplace = False
             pos = 0
-            for r in range(0, 20):
-                pos += 1
+            for r in range(0, 10):
+                pos += 2
                 nextbutton.place(x=((master.winfo_width() / 2) + pos))
                 master.update()
                 time.sleep(0.001)
             for t in range(0, 2):
-                for k in range(0, 40):
-                    pos -= 1
+                for k in range(0, 20):
+                    pos -= 2
                     nextbutton.place(x=((master.winfo_width() / 2) + pos))
                     master.update()
                     time.sleep(0.001)
-                for k in range(0, 40):
-                    pos += 1
+                for k in range(0, 20):
+                    pos += 2
                     nextbutton.place(x=((master.winfo_width() / 2) + pos))
                     master.update()
                     time.sleep(0.001)
-            for r in range(0, 20):
-                pos -= 1
+            for r in range(0, 10):
+                pos -= 2
                 nextbutton.place(x=((master.winfo_width() / 2) + pos))
                 master.update()
                 time.sleep(0.001)
