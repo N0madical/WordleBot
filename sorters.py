@@ -40,7 +40,7 @@ def sortgrayyellowgreen(allwords, gray, yellow, green, debug):
 
     return tempwords
 
-def topword(allwords, debug):
+def topword(allwords, debug, entry):
     temp = []
     returnlist = []
     vowels = ["a", "e", "i", "o", "u"]
@@ -122,10 +122,10 @@ def topword(allwords, debug):
                 templetterstore = []
                 tempscore = 0
                 for letter in word:
-                    if letter not in templetterstore:
+                    if (letter not in templetterstore) or (entry >= 3):
                         tempscore = tempscore + (27 - topletters.index(letter))
                         explination =  explination + "added " + letter + " for " + str(27 - topletters.index(letter)) + " points - "
-                    if letter in templetterstore:
+                    if (letter in templetterstore) and (entry <= 2):
                         tempscore = tempscore + (0 - topletters.index(letter))
                         explination = explination + "penalized duplicate " + letter + " for " + str(-27 + topletters.index(letter)) + " points - "
                     templetterstore.append(letter)

@@ -157,6 +157,7 @@ def debug():
         print("\nGreen Letters: " + str(letters))
         print("Yellow Letters: " + str(debugyellowletters))
         print("Grey Letters: " + str(badletters))
+        print("\nEntry #: " + str(entry))
         if len(allwords) < 50:
             print("\nAll Words: " + str(allwords))
 
@@ -354,7 +355,7 @@ def nextfunc():
             userinput = []
             charmap = ["0", "0", "0", "0", "0"]
             entry += 1
-            temptop = topword(allwords, debugistrue)
+            temptop = topword(allwords, debugistrue, entry)
             print("- " + str(temptop))
             for j in range(0, 5):
                 userinput.append(temptop[j])
