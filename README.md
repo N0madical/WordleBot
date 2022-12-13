@@ -2,7 +2,7 @@
 
 This bot is coded entirely in Python and attempts to guess the word on NYT's popular game, Wordle
 
-+ You can access wordle here: [nytimes.com/games/wordle](https://www.nytimes.com/games/wordle/index.html)
++ You can access Wordle here: [nytimes.com/games/wordle](https://www.nytimes.com/games/wordle/index.html)
 
 ## Starting WordleBot
 
