@@ -2,7 +2,7 @@
 # Built for Comp Sci 12/1/2022
 
 # --------------------- ATTENTION: For Debugging In Console Set To True:
-debugistrue = True
+debugistrue = False
 
 # Importing
 import sorters
