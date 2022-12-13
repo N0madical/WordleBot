@@ -1,7 +1,7 @@
 # Wordle Bot
-Welcome to my wordle bot!
+Welcome to my Wordle Bot!
 
-This bot is coded entirely in python and attempts to guess the word on NYT's popular game, Wordle
+This bot is coded entirely in Python and attempts to guess the word on NYT's popular game, Wordle
 
 + You can access wordle here: [nytimes.com/games/wordle](https://www.nytimes.com/games/wordle/index.html)
 
